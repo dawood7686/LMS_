@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {% comment %} <link rel="apple-touch-icon" sizes="76x76" href="/media/{{website.logo}}"> {% endcomment %}
+  <link rel="icon" type="image/png" href="/media/{{website.logo}}">
+  <title>
+    Dashboard - LMS
+  </title>
+  {%load static%}
+
+
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  {% comment %}
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" /> {% endcomment %}
+  <link type="text/css" href="{% static '/lms_assets/css/output.min.css' %}" rel="stylesheet" data-noprefix/>
+  <link type="text/css" href="{% static '/lms_assets/css/nucleo-icons.css' %}" rel="stylesheet" />
+  <link type="text/css" href="{% static '/lms_assets/css/nucleo-svg.css' %}" rel="stylesheet" />
+  <link type="text/css" href="{% static '/lms_assets/css/nucleo-svg.css' %}" rel="stylesheet" />
+  <link type="text/css" href="{% static '/lms_assets/css/soft-ui-dashboard.css?v=1.0.7' %}" rel="stylesheet" />
+  {% comment %}
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" /> {% endcomment %}
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  {% comment %}
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" /> {% endcomment %}
+  <!-- CSS Files -->
+  {% comment %}
+  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" /> {% endcomment %}
+</head>
+
+<body class="g-sidenav-show  bg-gray-100">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
+    id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+        aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href="/">
+        <img src="/media/{{website.logo}}" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold">{{website.Name}}</span>
+      </a>
+    </div>
+    <hr class="horizontal mt-0">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        {% for i in slides%}
+        
+        {%if i.Slide_Number == selected.Slide_Number%}
+        <li class="nav-item">
+          <a class="nav-link  active" href="{{slide_number}}/{{i.Slide_Number}}">
+            <div
+              class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Lecture {{i.Slide_Number}}</span>
+          </a>
+        </li>
+        {%elif i.Slide_Number <= selected.Slide_Number %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{slide_number}}/{{i.Slide_Number}}">
+            <div
+              class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Lecture {{i.Slide_Number}}</span>
+          </a>
+        </li>
+        {%else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{slide_number}}/{{i.Slide_Number}}">
+            <div
+              class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+              </svg>
+            </div>
+            <span class="nav-link-text ms-1">Lecture {{i.Slide_Number}}</span>
+          </a>
+        </li>
+        {%endif%}
+        {%endfor%}
+        
+      </ul>
+    </div>
+
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+      navbar-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Course</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Slides</li>
+          </ol>
+          <h6 class="font-weight-bolder mb-0">Slides</h6>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+
+          </div>
+          <ul class="navbar-nav  justify-content-end">
+
+            <li class="nav-item d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none"> {{request.user}} </span>
+              </a>
+            </li>
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+          </ul>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row py-10">
+        <div class="col-12">
+<center><h1>YOUR QUIZ RESULT IS: {{result}}%</h1><center>
+    {% comment %} <a href="{% get_static_prefix %}{{path}}" ><button class="btn btn-dark" style="width:20%; font-size:30px;">Take Quiz</button></center></a> {% endcomment %}
+    <a href="{{next}}" ><button class="btn btn-dark" style="width:20%; font-size:30px;">Retake</button></center></a>
+    
+    <a href="{{slide_next}}" ><button class="btn btn-dark" style="width:20%; font-size:30px;">Next</button></center></a>
+    
+          </div>
+        </div>
+      </div>
+
+
+    <!--   Core JS Files   -->
+    <script src="{% static 'lms_assets/js/core/popper.min.js' %}"></script>
+    <script src="{% static 'lms_assets/js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'lms_assets/js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'lms_assets/js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'lms_assets/js/plugins/chartjs.min.js' %}"></script>
+
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{% static 'lms_assets/js/soft-ui-dashboard.min.js?v=1.0.7' %}"></script>
+    
+
+
+</body>
+
+</html>
