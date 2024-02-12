@@ -5,7 +5,9 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate,  login, logout
 from .certificates import generate_certificate
+# from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 
 def index(request):
@@ -217,6 +219,7 @@ def course_dash(request, id):
 def course_dashboard(request, number, id):
      details = {}
      slidess = []
+     # request.headers['Content-Security-Policy']='default-src \'self\''
      users = request.user
      detail = user.objects.filter(username=users)
      website_data = website.objects.filter(code = detail[0].Country)
