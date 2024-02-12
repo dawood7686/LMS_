@@ -213,6 +213,7 @@ def course_dash(request, id):
           return redirect(f'/dashboard/slides/{courses.Name}/{slide[0].Slide_Number}')
      
      # return render(request, 'Course_slides.html')
+@xframe_options_exempt
 def course_dashboard(request, number, id):
      details = {}
      slidess = []
