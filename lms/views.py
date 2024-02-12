@@ -45,7 +45,7 @@ def signup(request):
           state = request.POST['state']
           company = request.POST['Company']
           country_id = request.POST['country']
-          country_detail = country.objects.get(id=country_id)
+          country_detail = country.objects.get(code=country_id)
           print(firstname, lastname, email, password, confirm_password, job_role, state, company)
           if len(firstname)<=2 or len(lastname)<=2 or len(username)<=3:
             error_msg="Please enter the correct name!"
