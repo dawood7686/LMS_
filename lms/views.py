@@ -273,7 +273,7 @@ def course_dashboard(request, number, id):
           return redirect(f'/dashboard/finish/{id}/{update.Slide}')
           # return redirect('/dashboard/progress')
           
-     return render(request, 'Course_slides.html', details)
+     return render(request, 'course_slides.html', details)
 
 def course_quiz(request, name, number):
      print(name)
