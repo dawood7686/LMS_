@@ -94,16 +94,16 @@ import os
 
 def generate_certificate(name, course_title, completion_date, image_path):
     # Load the certificate template image
-    template_path = 'D:/LMS/project/SoftUI_LMS/media/media/certificate.jpg' # Replace with the path to your certificate template image
+    template_path = f'{os.getcwd()}/media/certificate.jpg' # Replace with the path to your certificate template image
     certificate_img = Image.open(template_path)
 
     # Define fonts and font sizes
-    name_font = ImageFont.truetype('D:/LMS/project/SoftUI_LMS/media/media/font/ten.ttf', 50)  # Replace with the path to the font file for the name
-    title_font = ImageFont.truetype('D:/LMS/project/SoftUI_LMS/media/media/font/ten.ttf', 50)  # Replace with the path to the font file for the title
-    date_font = ImageFont.truetype('D:/LMS/project/SoftUI_LMS/media/media/font/ten.ttf', 40)  # Replace with the path to the font file for the date
+    name_font = ImageFont.truetype(f'{os.getcwd()}/media/font/ten.ttf', 50)  # Replace with the path to the font file for the name
+    title_font = ImageFont.truetype(f'{os.getcwd()}/media/font/ten.ttf', 50)  # Replace with the path to the font file for the title
+    date_font = ImageFont.truetype(f'{os.getcwd()}/media/font/ten.ttf', 40)  # Replace with the path to the font file for the date
 
     # Load the image to be placed on the certificate
-    image = Image.open('D:/LMS/project/SoftUI_LMS/media/media/dp_image11-796.jpg')
+    image = Image.open(f'{os.getcwd()}/media/dp_image11-796.jpg')
 
     # Calculate the centered position for the image and text
     image_x = (certificate_img.width - image.width) // 2
