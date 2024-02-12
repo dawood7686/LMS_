@@ -138,7 +138,7 @@ def generate_certificate(name, course_title, completion_date, image_path):
     certificate_img.paste(image, (image_x, image_y))
 
     # Save the generated certificate
-    output_path = 'D:/LMS/project/SoftUI_LMS/lms/static/'  # Replace with the path to the folder where you want to save the certificate
+    output_path = f'{os.getcwd()}/static/'  # Replace with the path to the folder where you want to save the certificate
     certificate_filename = f'{name.replace(" ", "_")}_certificate.png'
     certificate_img.save(os.path.join(output_path, certificate_filename))
 
