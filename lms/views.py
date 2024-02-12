@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate,  login, logout
 from .certificates import generate_certificate
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 
 def index(request):
      # print(request.user +'  user')
