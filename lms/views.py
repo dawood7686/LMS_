@@ -32,7 +32,7 @@ def loginn(request):
                 return redirect("/dashboard")
             else:
                 error_msg='''Invalid credentials! Please try again'''
-    print(error_msg, email, password)
+    # print(error_msg, email, password)
     return render(request, "login.html", {'error':error_msg})
 
 def signup(request):
