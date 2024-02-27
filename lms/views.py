@@ -479,6 +479,6 @@ def user_certificate(request, id):
                # return redirect('/dashboard/progress/')
                # return response
 
-
-     
-     
+def handle_404(request, exception):
+     request.status_code = 404
+     return render(request, "404.html")

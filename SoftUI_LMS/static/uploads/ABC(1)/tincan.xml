@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tincan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://projecttincan.com/tincan.xsd">
+	<activities>
+		<activity id="http://67ErgawDWrz_course_id" type="http://adlnet.gov/expapi/activities/course">
+			<name lang="und">Time Management Ch. 1 (xAPI)</name>
+			<description lang="und" />
+			<launch lang="und">index_lms.html</launch>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/6ScMvCessRX" type="http://adlnet.gov/expapi/activities/objective">
+			<name lang="und">Time Management Ch. 1 (xAPI)</name>
+			<description lang="und">Time Management Ch. 1 (xAPI)</description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/6fhBSneUlqR" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Time Management </name>
+			<description lang="und">Time Management </description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/5yo8UfR3iYR" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Introduction </name>
+			<description lang="und">Introduction </description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/5iDhBQfYa1m" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Course Objectives </name>
+			<description lang="und">Course Objectives </description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/6ZN8sjgEozG" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Setting Smart Goals</name>
+			<description lang="und">Setting Smart Goals</description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/5zL1rFzrIZ0" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Goal Setting </name>
+			<description lang="und">Goal Setting </description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/6ekeuDHQ1mT" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Untitled Slide</name>
+			<description lang="und">Untitled Slide</description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/6QCEOzs8Kp6" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">The Three P’s
+
+
+</name>
+			<description lang="und">The Three P’s
+
+
+</description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/62WEFwya7XE" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">SMART</name>
+			<description lang="und">SMART</description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/6YXX42pqsoD" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Prioritising Your Goals</name>
+			<description lang="und">Prioritising Your Goals</description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/5qFcXGjwrQr" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Visualisation </name>
+			<description lang="und">Visualisation </description>
+		</activity>
+		<activity id="http://67ErgawDWrz_course_id/5V1hprTNICN" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Case Study</name>
+			<description lang="und">Case Study</description>
+		</activity>
+	</activities>
+</tincan>

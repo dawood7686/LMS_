@@ -40,9 +40,11 @@ urlpatterns = [
     path('dashboard/finish/<str:name>/<str:number>', views.finish, name="course Quiz"),
     path('dashboard/community', views.community, name="course community"),
     path('certificate/<int:id>', views.user_certificate, name="certificate"),
-
+    
+    
     
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns += staticfiles_urlpatterns()    
+handle404 = views.handle_404
