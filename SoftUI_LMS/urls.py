@@ -48,3 +48,5 @@ urlpatterns = [
 
 urlpatterns += staticfiles_urlpatterns()    
 handle404 = views.handle_404
+handle302 = views.handle_302
+handle500 = views.handle_500

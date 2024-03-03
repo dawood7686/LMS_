@@ -333,59 +333,62 @@ def finish(request, name, number):
 
 
 def take_quiz(request, name, number):
-     print(name)
-     details = {}
-     quiz_ids=[]
-     result = {}
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     courses = course.objects.get(Name=name)
-     slide = slides.objects.filter(Course = courses)
-     quiz = Quiz.objects.filter(Course = courses, After = number)
-     selected = slides.objects.filter(Course = courses, Slide_Number=number)
-     if detail:
-          if quiz:
-               for i in quiz:
-                    quiz_ids.append(i.id)
-                    if len(quiz)==10:
-                         break
-               # print(quiz_ids)
-               details = {'details':detail[0],
-                         'website':website_data[0],
-                         'slides':slide,
-                         'selected':selected[0],
-                         'next':f'/dashboard/quiz/{courses.Name}/{int(number)}',
-                         'slide_number':f'/dashboard/slides/{courses.Name}',
-                         'quiz':quiz,
-                         'ids':quiz_ids,
-                         'slide_next':f'/dashboard/slides/{courses.Name}/{int(number)+1}'
-                         }
-          else:
-               return redirect(f'/dashboard/slides/{courses.Name}/{int(number)+1}')
-     else:
-          return redirect('/login/')
-     sol = []
-     if request.method == "POST":
-          for i in quiz_ids:
-               m = str(request.POST[f'{i}'])
-               print(m)
-               ans = Quiz.objects.get(id=i)
-               print(ans, '_________________________ans')
-               if m == ans.correct_option:
-                    print(1)
-                    result[f"{ans.id}"] = 1
-                    sol.append(1)
+     try:
+          print(name)
+          details = {}
+          quiz_ids=[]
+          result = {}
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          courses = course.objects.get(Name=name)
+          slide = slides.objects.filter(Course = courses)
+          quiz = Quiz.objects.filter(Course = courses, After = number)
+          selected = slides.objects.filter(Course = courses, Slide_Number=number)
+          if detail:
+               if quiz:
+                    for i in quiz:
+                         quiz_ids.append(i.id)
+                         if len(quiz)==10:
+                              break
+                    # print(quiz_ids)
+                    details = {'details':detail[0],
+                              'website':website_data[0],
+                              'slides':slide,
+                              'selected':selected[0],
+                              'next':f'/dashboard/quiz/{courses.Name}/{int(number)}',
+                              'slide_number':f'/dashboard/slides/{courses.Name}',
+                              'quiz':quiz,
+                              'ids':quiz_ids,
+                              'slide_next':f'/dashboard/slides/{courses.Name}/{int(number)+1}'
+                              }
                else:
-                    print(0)
-                    result[f"{ans.id}"] = 0
+                    return redirect(f'/dashboard/slides/{courses.Name}/{int(number)+1}')
+          else:
+               return redirect('/login/')
+          sol = []
+          if request.method == "POST":
+               for i in quiz_ids:
+                    m = str(request.POST[f'{i}'])
+                    print(m)
+                    ans = Quiz.objects.get(id=i)
+                    print(ans, '_________________________ans')
+                    if m == ans.correct_option:
+                         print(1)
+                         result[f"{ans.id}"] = 1
+                         sol.append(1)
+                    else:
+                         print(0)
+                         result[f"{ans.id}"] = 0
 
-               
-               details['result'] = (f'{(len(sol)*100)/len(quiz_ids)}')
-               print(details['result'])
                     
-          return render(request, "ending_page.html", details)
-     return render(request, "course_quizs.html", details)
+                    details['result'] = (f'{(len(sol)*100)/len(quiz_ids)}')
+                    print(details['result'])
+                         
+               return render(request, "ending_page.html", details)
+          return render(request, "course_quizs.html", details)
+     except:
+          return handle_302(request, Exception)
 
 # def course_quiz(request, name, number):
 #      print(name)
@@ -458,27 +461,35 @@ def community(request):
 
 
 def user_certificate(request, id):
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     course_name = progress.objects.get(id=id)
-     if course_name:
-          if course_name.Status=="Completed":
-               for i in website_data:
-                    print(i.logo)
-               print(course_name.Course)
-               from django.http import FileResponse
-               certificate = generate_certificate(detail[0].Name, course_name.Course.Name, '23-8-2023', website_data[0].logo)
-               print(certificate)
-               # response = FileResponse(certificate, content_type='image/jpeg')
-               # response['Content-Disposition'] = f'attachment; filename="admin_certificate.png"'
+     try:
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          course_name = progress.objects.get(id=id)
+          if course_name:
+               if course_name.Status=="Completed":
+                    for i in website_data:
+                         print(i.logo)
+                    print(course_name.Course)
+                    from django.http import FileResponse
+                    certificate = generate_certificate(detail[0].Name, course_name.Course.Name, '23-8-2023', website_data[0].logo)
+                    print(certificate)
+                    # response = FileResponse(certificate, content_type='image/jpeg')
+                    # response['Content-Disposition'] = f'attachment; filename="admin_certificate.png"'
 
-               return redirect(f'/static/{certificate}')
-               # response =  HttpResponse(content_type='application/pdf')
-               # response['Content-Disposition'] = f'D:/LMS/project/SoftUI_LMS/lms/static; filename="admin_certificate.png"'
-               # return redirect('/dashboard/progress/')
-               # return response
-
+                    return redirect(f'/static/{certificate}')
+                    # response =  HttpResponse(content_type='application/pdf')
+                    # response['Content-Disposition'] = f'D:/LMS/project/SoftUI_LMS/lms/static; filename="admin_certificate.png"'
+                    # return redirect('/dashboard/progress/')
+                    # return response
+     except:
+          return handle_302(request, Exception)
 def handle_404(request, exception):
      request.status_code = 404
      return render(request, "404.html")
+def handle_302(request, exception):
+     request.status_code = 302
+     return render(request, '302.html')
+def handle_500(request, exception):
+     request.status_code = 500
+     return render(request, '302.html')
