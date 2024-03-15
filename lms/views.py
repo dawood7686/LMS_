@@ -11,7 +11,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 
 
 def index(request):
-     # print(request.user +'  user')
+     # #print(request.user +'  user')
      user = str(request.user)
      if user == "AnonymousUser":
           return redirect('/login')
@@ -32,7 +32,7 @@ def loginn(request):
                 return redirect("/dashboard")
             else:
                 error_msg='''Invalid credentials! Please try again'''
-    # print(error_msg, email, password)
+    # #print(error_msg, email, password)
     return render(request, "login.html", {'error':error_msg})
 
 def signup(request):
@@ -50,7 +50,7 @@ def signup(request):
           company = request.POST['Company']
           country_id = request.POST['country']
           country_detail = country.objects.get(code=country_id)
-          print(firstname, lastname, email, password, confirm_password, job_role, state, company)
+          #print(firstname, lastname, email, password, confirm_password, job_role, state, company)
           if len(firstname)<=2 or len(lastname)<=2 or len(username)<=3:
             error_msg="Please enter the correct name!"
           elif len(password)>=8:
@@ -71,7 +71,7 @@ def signup(request):
                     error_msg = '''Incorrect password in Confirm password.'''
           else:
                error_msg='''Passwords doesn't match'''
-     print(error_msg)
+     #print(error_msg)
      return render(request, 'signup.html', {"error":error_msg, 'countries':countries})
 
 
@@ -93,7 +93,7 @@ def lms_dashboard(request):
      detail = user.objects.filter(username=users)
      enrollment = course.objects.all()
      category = categories.objects.all()
-     print(request)
+     #print(request)
      website_data = website.objects.filter(code = detail[0].Country)
      if detail:
           if enrollment:
@@ -120,7 +120,7 @@ def lms_dashboard_filter(request, id):
      if detail:
           if enrollment:
                for i in category:
-                    print(i)
+                    #print(i)
                details = {
                     'details':detail[0],
                     'website':website_data[0],
@@ -147,11 +147,11 @@ def lms_progress(request):
                slide = slides.objects.filter(Course = i.Course)
                for slid in slide:
                     data.append(slid.Slide_Number)
-               print(len(data))
+               #print(len(data))
                percent = int((i.Slide * 100) / len(data))
-               print(percent)
+               #print(percent)
                percentage[i.Course.Name] = percent
-               print(percentage)
+               #print(percentage)
                data=[]
                     
           details = {'details':detail[0],
@@ -183,7 +183,7 @@ def quiz(request):
      if request.method == "POST":
           option_A = str(request.POST['1'])
           if option_A:
-               print(option_A)
+               #print(option_A)
      details = {}
      users = request.user
      detail = user.objects.filter(username=users)
@@ -202,7 +202,7 @@ def course_dash(request, id):
      slide = slides.objects.filter(Course = courses)
      data = progress.objects.filter(User=users, Course = courses.id)
      if data:     
-          print(f"{data[0].Slide} _________________")
+          #print(f"{data[0].Slide} _________________")
           try:
                slide = slides.objects.get(Course = courses, Slide_Number=data[0].Slide)
           
@@ -236,26 +236,26 @@ def course_dashboard(request, number, id):
                import os
                if os.path.exists((f'{os.getcwd()}/lms/static/uploads/{id}({number})/story.html')) and os.path.isdir((f'{os.getcwd()}/lms/static/uploads/{id}({number})/story.html')):  
                          path = f'uploads/{id}({number})/story.html'
-                         print(path)
+                         #print(path)
                          
                else:
                     with zipfile.ZipFile(f'{os.getcwd()}/media/{selected[0].Slide}', 'r') as zip_ref:
                          zip_ref.extractall(f'{os.getcwd()}/lms/static/uploads/{id}({number})')
                          path = f'uploads/{id}({number})/story.html'
                     # return redirect("/media/uploads/ch1/story.html")
-               print(path)
+               #print(path)
                if update.Slide < int(number):
                     update.Slide = int(number)
-               print(update.Slide)
+               #print(update.Slide)
                for i in slide:
                     slidess.append(i.Slide_Number)
                percentage = int((int(update.Slide) * 100) / len(slidess))
-               print(percentage)
+               #print(percentage)
                if percentage != 100:
                     update.Status = "In-Progress"
                else:
                     update.Status = "Completed"
-               print(percentage)
+               #print(percentage)
                slidess = []
                update.percentage = percentage
                update.save()
@@ -275,14 +275,14 @@ def course_dashboard(request, number, id):
           update.Status = "Completed"
           update.percentage = 100
           update.save()
-          print(update.Status)
+          #print(update.Status)
           return redirect(f'/dashboard/finish/{id}/{update.Slide}')
           # return redirect('/dashboard/progress')
           
      return render(request, 'course_slides.html', details)
 
 def course_quiz(request, name, number):
-     print(name)
+     #print(name)
      details = {}
      quiz_ids=[]
      users = request.user
@@ -308,7 +308,7 @@ def course_quiz(request, name, number):
           return redirect('/login/')
      return render(request, "ready_quiz.html", details)
 def finish(request, name, number):
-     print(name)
+     #print(name)
      details = {}
      quiz_ids=[]
      users = request.user
@@ -334,7 +334,7 @@ def finish(request, name, number):
 
 def take_quiz(request, name, number):
      try:
-          print(name)
+          #print(name)
           details = {}
           quiz_ids=[]
           result = {}
@@ -351,7 +351,7 @@ def take_quiz(request, name, number):
                          quiz_ids.append(i.id)
                          if len(quiz)==10:
                               break
-                    # print(quiz_ids)
+                    # #print(quiz_ids)
                     details = {'details':detail[0],
                               'website':website_data[0],
                               'slides':slide,
@@ -370,20 +370,20 @@ def take_quiz(request, name, number):
           if request.method == "POST":
                for i in quiz_ids:
                     m = str(request.POST[f'{i}'])
-                    print(m)
+                    #print(m)
                     ans = Quiz.objects.get(id=i)
-                    print(ans, '_________________________ans')
+                    #print(ans, '_________________________ans')
                     if m == ans.correct_option:
-                         print(1)
+                         #print(1)
                          result[f"{ans.id}"] = 1
                          sol.append(1)
                     else:
-                         print(0)
+                         #print(0)
                          result[f"{ans.id}"] = 0
 
                     
                     details['result'] = (f'{(len(sol)*100)/len(quiz_ids)}')
-                    print(details['result'])
+                    #print(details['result'])
                          
                return render(request, "ending_page.html", details)
           return render(request, "course_quizs.html", details)
@@ -391,7 +391,7 @@ def take_quiz(request, name, number):
           return handle_302(request, Exception)
 
 # def course_quiz(request, name, number):
-#      print(name)
+#      #print(name)
 #      details = {}
 #      quiz_ids=[]
 #      users = request.user
@@ -406,11 +406,11 @@ def take_quiz(request, name, number):
 #                for i in quiz:
 #                     quiz_ids.append(i.id)
 #                     if i.id == quiz_ids[0]:
-#                          print(i.id)
+#                          #print(i.id)
                     
 #                     if len(quiz)==10:
 #                          break
-#                print(quiz_ids)
+#                #print(quiz_ids)
 #                details = {'details':detail[0],
 #                          'website':website_data[0],
 #                          'slides':slide,
@@ -429,9 +429,9 @@ def take_quiz(request, name, number):
 #                m = str(request.POST[f'{i}'])
 #                ans = Quiz.objects.get(id=i)
 #                if m == ans.correct_option:
-#                     print(1)
+#                     #print(1)
 #                else:
-#                     print(0)
+#                     #print(0)
                     
 #           return redirect(f'/dashboard/slides/{courses.Name}/{int(number)+1}')
 #      return render(request, "course_quizs.html", details)
@@ -469,11 +469,11 @@ def user_certificate(request, id):
           if course_name:
                if course_name.Status=="Completed":
                     for i in website_data:
-                         print(i.logo)
-                    print(course_name.Course)
+                         #print(i.logo)
+                    #print(course_name.Course)
                     from django.http import FileResponse
                     certificate = generate_certificate(detail[0].Name, course_name.Course.Name, '23-8-2023', website_data[0].logo)
-                    print(certificate)
+                    #print(certificate)
                     # response = FileResponse(certificate, content_type='image/jpeg')
                     # response['Content-Disposition'] = f'attachment; filename="admin_certificate.png"'
 
