@@ -20,149 +20,166 @@ def index(request):
           return redirect("/dashboard")
 
 def loginn(request):
-    email=None
-    password=None
-    error_msg = None
-    if request.method == "POST":
-            email = request.POST['email']
-            password = request.POST['password']
-            user = authenticate(username=email, password=password)
-            if user:
-                login(request, user)
-                return redirect("/dashboard")
-            else:
-                error_msg='''Invalid credentials! Please try again'''
-    # #print(error_msg, email, password)
-    return render(request, "login.html", {'error':error_msg})
-
-def signup(request):
-     countries = country.objects.all()
-     error_msg=None
-     if request.method == 'POST':
-          firstname = request.POST['firstname']
-          lastname = request.POST['lastname']
-          username = request.POST['username']
-          email = request.POST['email']
-          password = request.POST['password']
-          confirm_password = request.POST['confirm_password']
-          job_role = request.POST['job_role']
-          state = request.POST['state']
-          company = request.POST['Company']
-          country_id = request.POST['country']
-          country_detail = country.objects.get(code=country_id)
-          #print(firstname, lastname, email, password, confirm_password, job_role, state, company)
-          if len(firstname)<=2 or len(lastname)<=2 or len(username)<=3:
-            error_msg="Please enter the correct name!"
-          elif len(password)>=8:
-               if password==confirm_password:
-                    pre_user = User.objects.filter(username=username).exists()
-                    if pre_user:
-                         error_msg = '''Username is already exist''' 
+     try:      
+          email=None
+          password=None
+          error_msg = None
+          if request.method == "POST":
+                    email = request.POST['email']
+                    password = request.POST['password']
+                    user = authenticate(username=email, password=password)
+                    if user:
+                         login(request, user)
+                         return redirect("/dashboard")
                     else:
-                         user1 = user(Name=f"{firstname} {lastname}", username=username, Email=email, Password=password, job_role=job_role, state=state, company=company, Country=country_detail)
-                         user1.save()
-                         users = User.objects.create_user(username, email, password)
-                         users.first_name=firstname
-                         users.last_name=lastname
-                         users.save()
-                         
-                         return redirect("/login")
-               else:
-                    error_msg = '''Incorrect password in Confirm password.'''
-          else:
-               error_msg='''Passwords doesn't match'''
-     #print(error_msg)
-     return render(request, 'signup.html', {"error":error_msg, 'countries':countries})
+                         error_msg='''Invalid credentials! Please try again'''
+          # #print(error_msg, email, password)
+          return render(request, "login.html", {'error':error_msg})
 
+     except:
+          return handle_302(request, Exception)
+def signup(request):
+     try:
+          countries = country.objects.all()
+          error_msg=None
+          if request.method == 'POST':
+               firstname = request.POST['firstname']
+               lastname = request.POST['lastname']
+               username = request.POST['username']
+               email = request.POST['email']
+               password = request.POST['password']
+               confirm_password = request.POST['confirm_password']
+               job_role = request.POST['job_role']
+               state = request.POST['state']
+               company = request.POST['Company']
+               country_id = request.POST['country']
+               country_detail = country.objects.get(code=country_id)
+               #print(firstname, lastname, email, password, confirm_password, job_role, state, company)
+               if len(firstname)<=2 or len(lastname)<=2 or len(username)<=3:
+                    error_msg="Please enter the correct name!"
+               elif len(password)>=8:
+                    if password==confirm_password:
+                         pre_user = User.objects.filter(username=username).exists()
+                         if pre_user:
+                              error_msg = '''Username is already exist''' 
+                         else:
+                              user1 = user(Name=f"{firstname} {lastname}", username=username, Email=email, Password=password, job_role=job_role, state=state, company=company, Country=country_detail)
+                              user1.save()
+                              users = User.objects.create_user(username, email, password)
+                              users.first_name=firstname
+                              users.last_name=lastname
+                              users.save()
+                              
+                              return redirect("/login")
+                    else:
+                         error_msg = '''Incorrect password in Confirm password.'''
+               else:
+                    error_msg='''Passwords doesn't match'''
+          #print(error_msg)
+          return render(request, 'signup.html', {"error":error_msg, 'countries':countries})
+
+     except:
+          return handle_302(request, Exception)
 
 def lms_profile(request):
-     details = {}
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     if detail:
-          details = {'details':detail[0],
-                     'website':website_data[0]}
-     else:
-          return redirect('/login/')
-     return render(request, 'user.html', details)
+     try:
+          details = {}
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          if detail:
+               details = {'details':detail[0],
+                         'website':website_data[0]}
+          else:
+               return redirect('/login/')
+          return render(request, 'user.html', details)
 
+     except:
+          return handle_302(request, Exception)
 def lms_dashboard(request):
-     details = {}
-     users = request.user
-     detail = user.objects.filter(username=users)
-     enrollment = course.objects.all()
-     category = categories.objects.all()
-     #print(request)
-     website_data = website.objects.filter(code = detail[0].Country)
-     if detail:
-          if enrollment:
-               details = {
-                    'details':detail[0],
-                    'website':website_data[0],
-                    'courses':enrollment,
-                    'Category':category,
-                    }
+     try:
+          details = {}
+          users = request.user
+          detail = user.objects.filter(username=users)
+          enrollment = course.objects.all()
+          category = categories.objects.all()
+          #print(request)
+          website_data = website.objects.filter(code = detail[0].Country)
+          if detail:
+               if enrollment:
+                    details = {
+                         'details':detail[0],
+                         'website':website_data[0],
+                         'courses':enrollment,
+                         'Category':category,
+                         }
+               else:
+                    details = {'details':detail[0],
+                         'website':website_data[0],}
           else:
-               details = {'details':detail[0],
-                    'website':website_data[0],}
-     else:
-          return redirect('/login/')
-     return render(request, 'dashboard.html', details)
+               return redirect('/login/')
+          return render(request, 'dashboard.html', details)
 
+     except:
+          return handle_302(request, Exception)
 def lms_dashboard_filter(request, id):
-     details = {}
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     enrollment = course.objects.filter(category=id)
-     category = categories.objects.all()
-     if detail:
-          if enrollment:
-               for i in category:
-                    #print(i)
-               details = {
-                    'details':detail[0],
-                    'website':website_data[0],
-                    'courses':enrollment,
-                    'Category':category,
-                    }
+     try:
+          details = {}
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          enrollment = course.objects.filter(category=id)
+          category = categories.objects.all()
+          if detail:
+               if enrollment:
+                    for i in category:
+                         pass
+                    details = {
+                         'details':detail[0],
+                         'website':website_data[0],
+                         'courses':enrollment,
+                         'Category':category,
+                         }
+               else:
+                    details = {'details':detail[0],
+                         'website':website_data[0],}
           else:
-               details = {'details':detail[0],
-                    'website':website_data[0],}
-     else:
-          return redirect('/login/')
-     return render(request, 'dashboard.html', details)
+               return redirect('/login/')
+          return render(request, 'dashboard.html', details)
 
+     except:
+          return handle_302(request, Exception)
 def lms_progress(request):
-     details = {}
-     data = []
-     percentage = {}
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     complete_progress = progress.objects.filter(User = users)
-     if detail:
-          for i in complete_progress:
-               slide = slides.objects.filter(Course = i.Course)
-               for slid in slide:
-                    data.append(slid.Slide_Number)
-               #print(len(data))
-               percent = int((i.Slide * 100) / len(data))
-               #print(percent)
-               percentage[i.Course.Name] = percent
-               #print(percentage)
-               data=[]
-                    
-          details = {'details':detail[0],
-                     'website':website_data[0],
-                     'progress':complete_progress,
-                     'percentage':percentage,
-                     }
-     else:
-          return redirect('/login/')
-     return render(request, 'progress.html', details)
-
+     try:
+          details = {}
+          data = []
+          percentage = {}
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          complete_progress = progress.objects.filter(User = users)
+          if detail:
+               for i in complete_progress:
+                    slide = slides.objects.filter(Course = i.Course)
+                    for slid in slide:
+                         data.append(slid.Slide_Number)
+                    #print(len(data))
+                    percent = int((i.Slide * 100) / len(data))
+                    #print(percent)
+                    percentage[i.Course.Name] = percent
+                    #print(percentage)
+                    data=[]
+                         
+               details = {'details':detail[0],
+                         'website':website_data[0],
+                         'progress':complete_progress,
+                         'percentage':percentage,
+                         }
+          else:
+               return redirect('/login/')
+          return render(request, 'progress.html', details)
+     except:
+          return handle_302(request, Exception)
 def lms_billing(request):
      details = {}
      users = request.user
@@ -180,157 +197,170 @@ def log_out(request):
      return redirect('/')
 
 def quiz(request):
-     if request.method == "POST":
-          option_A = str(request.POST['1'])
-          if option_A:
-               #print(option_A)
-     details = {}
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     if detail:
-          details = {'details':detail[0],
-                     'website':website_data[0]}
-     else:
-          return redirect('/login/')
-     return redirect('/dashboard/1/quiz')
-
+     try:
+          if request.method == "POST":
+               option_A = str(request.POST['1'])
+               if option_A:
+                    #print(option_A)
+                    pass
+          details = {}
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          if detail:
+               details = {'details':detail[0],
+                         'website':website_data[0]}
+          else:
+               return redirect('/login/')
+          return redirect('/dashboard/1/quiz')
+     except:
+          handle_302(request, Exception)
 def course_dash(request, id):
-     users = request.user
-     detail = User.objects.get(username=users)
-     courses = course.objects.get(id=id)
-     slide = slides.objects.filter(Course = courses)
-     data = progress.objects.filter(User=users, Course = courses.id)
-     if data:     
-          #print(f"{data[0].Slide} _________________")
-          try:
-               slide = slides.objects.get(Course = courses, Slide_Number=data[0].Slide)
-          
-               return redirect(f'/dashboard/slides/{courses.Name}/{slide.Slide_Number}')
-          except:
-               return redirect(f'/')
-     else:
-          course_progress = progress(User=detail, Course=courses, Slide=1, Status="In-Progress")
-          course_progress.save()
-          return redirect(f'/dashboard/slides/{courses.Name}/{slide[0].Slide_Number}')
-     
+     try:
+          users = request.user
+          detail = User.objects.get(username=users)
+          courses = course.objects.get(id=id)
+          slide = slides.objects.filter(Course = courses)
+          data = progress.objects.filter(User=users, Course = courses.id)
+          if data:     
+               #print(f"{data[0].Slide} _________________")
+               try:
+                    slide = slides.objects.get(Course = courses, Slide_Number=data[0].Slide)
+               
+                    return redirect(f'/dashboard/slides/{courses.Name}/{slide.Slide_Number}')
+               except:
+                    return redirect(f'/')
+          else:
+               course_progress = progress(User=detail, Course=courses, Slide=1, Status="In-Progress")
+               course_progress.save()
+               return redirect(f'/dashboard/slides/{courses.Name}/{slide[0].Slide_Number}')
+     except:
+          return handle_302(request, Exception)
      # return render(request, 'Course_slides.html')
 @xframe_options_exempt
 def course_dashboard(request, number, id):
-     details = {}
-     slidess = []
-     # request.headers['Content-Security-Policy']='default-src \'self\''
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     courses = course.objects.get(Name=id)
-     slide = slides.objects.filter(Course = courses)
-     progres = progress.objects.filter(Course = courses, User=users)
-     update = progress.objects.get(id=progres[0].id)
-     selected = slides.objects.filter(Course = courses, Slide_Number=number)
      try:
+               
+          details = {}
+          slidess = []
+          # request.headers['Content-Security-Policy']='default-src \'self\''
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          courses = course.objects.get(Name=id)
+          slide = slides.objects.filter(Course = courses)
+          progres = progress.objects.filter(Course = courses, User=users)
+          update = progress.objects.get(id=progres[0].id)
           selected = slides.objects.filter(Course = courses, Slide_Number=number)
+          try:
+               selected = slides.objects.filter(Course = courses, Slide_Number=number)
 
-          if detail:
-               import zipfile
-               import os
-               if os.path.exists((f'{os.getcwd()}/lms/static/uploads/{id}({number})/story.html')) and os.path.isdir((f'{os.getcwd()}/lms/static/uploads/{id}({number})/story.html')):  
-                         path = f'uploads/{id}({number})/story.html'
-                         #print(path)
-                         
+               if detail:
+                    import zipfile
+                    import os
+                    if os.path.exists((f'{os.getcwd()}/lms/static/uploads/{id}({number})/story.html')) and os.path.isdir((f'{os.getcwd()}/lms/static/uploads/{id}({number})/story.html')):  
+                              path = f'uploads/{id}({number})/story.html'
+                              #print(path)
+                              
+                    else:
+                         with zipfile.ZipFile(f'{os.getcwd()}/media/{selected[0].Slide}', 'r') as zip_ref:
+                              zip_ref.extractall(f'{os.getcwd()}/lms/static/uploads/{id}({number})')
+                              path = f'uploads/{id}({number})/story.html'
+                         # return redirect("/media/uploads/ch1/story.html")
+                    #print(path)
+                    if update.Slide < int(number):
+                         update.Slide = int(number)
+                    #print(update.Slide)
+                    for i in slide:
+                         slidess.append(i.Slide_Number)
+                    percentage = int((int(update.Slide) * 100) / len(slidess))
+                    #print(percentage)
+                    if percentage != 100:
+                         update.Status = "In-Progress"
+                    else:
+                         update.Status = "Completed"
+                    #print(percentage)
+                    slidess = []
+                    update.percentage = percentage
+                    update.save()
+                    details = {'details':detail[0],
+                              'website':website_data[0],
+                              'slides':slide,
+                              'selected':selected[0],
+                              'path': path,
+                              'next':f'/dashboard/quiz/{courses.Name}/{int(number)}',
+                              'slide_number':f'/dashboard/slides/{courses.Name}',
+                              'percentage':percentage,
+                              }
                else:
-                    with zipfile.ZipFile(f'{os.getcwd()}/media/{selected[0].Slide}', 'r') as zip_ref:
-                         zip_ref.extractall(f'{os.getcwd()}/lms/static/uploads/{id}({number})')
-                         path = f'uploads/{id}({number})/story.html'
-                    # return redirect("/media/uploads/ch1/story.html")
-               #print(path)
-               if update.Slide < int(number):
-                    update.Slide = int(number)
-               #print(update.Slide)
-               for i in slide:
-                    slidess.append(i.Slide_Number)
-               percentage = int((int(update.Slide) * 100) / len(slidess))
-               #print(percentage)
-               if percentage != 100:
-                    update.Status = "In-Progress"
-               else:
-                    update.Status = "Completed"
-               #print(percentage)
-               slidess = []
-               update.percentage = percentage
+                    return redirect('/login/')
+          except:
+               
+               update.Status = "Completed"
+               update.percentage = 100
                update.save()
-               details = {'details':detail[0],
-                         'website':website_data[0],
-                         'slides':slide,
-                         'selected':selected[0],
-                         'path': path,
-                         'next':f'/dashboard/quiz/{courses.Name}/{int(number)}',
-                         'slide_number':f'/dashboard/slides/{courses.Name}',
-                         'percentage':percentage,
-                         }
+               #print(update.Status)
+               return redirect(f'/dashboard/finish/{id}/{update.Slide}')
+               # return redirect('/dashboard/progress')
+               
+          return render(request, 'course_slides.html', details)
+     except:
+          return handle_302(request, Exception)
+def course_quiz(request, name, number):
+     try:
+          #print(name)
+          details = {}
+          quiz_ids=[]
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          courses = course.objects.get(Name=name)
+          slide = slides.objects.filter(Course = courses)
+          quiz = Quiz.objects.filter(Course = courses, After = number)
+          selected = slides.objects.filter(Course = courses, Slide_Number=number)
+          if detail:
+               if quiz:
+                    details = {'details':detail[0],
+                              'website':website_data[0],
+                              'slides':slide,
+                              'selected':selected[0],
+                              'next':f'/dashboard/quiz/start/{courses.Name}/{int(number)}',
+                              'slide_number':f'/dashboard/slides/{courses.Name}',
+                              'quiz':quiz,
+                              }
+               else:
+                    return redirect(f'/dashboard/slides/{courses.Name}/{int(number)+1}')
           else:
                return redirect('/login/')
+          return render(request, "ready_quiz.html", details)
      except:
-          
-          update.Status = "Completed"
-          update.percentage = 100
-          update.save()
-          #print(update.Status)
-          return redirect(f'/dashboard/finish/{id}/{update.Slide}')
-          # return redirect('/dashboard/progress')
-          
-     return render(request, 'course_slides.html', details)
-
-def course_quiz(request, name, number):
-     #print(name)
-     details = {}
-     quiz_ids=[]
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     courses = course.objects.get(Name=name)
-     slide = slides.objects.filter(Course = courses)
-     quiz = Quiz.objects.filter(Course = courses, After = number)
-     selected = slides.objects.filter(Course = courses, Slide_Number=number)
-     if detail:
-          if quiz:
-               details = {'details':detail[0],
-                         'website':website_data[0],
-                         'slides':slide,
-                         'selected':selected[0],
-                         'next':f'/dashboard/quiz/start/{courses.Name}/{int(number)}',
-                         'slide_number':f'/dashboard/slides/{courses.Name}',
-                         'quiz':quiz,
-                         }
-          else:
-               return redirect(f'/dashboard/slides/{courses.Name}/{int(number)+1}')
-     else:
-          return redirect('/login/')
-     return render(request, "ready_quiz.html", details)
+          return handle_302(request,Exception)
 def finish(request, name, number):
-     #print(name)
-     details = {}
-     quiz_ids=[]
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     courses = course.objects.get(Name=name)
-     slide = slides.objects.filter(Course = courses)
-     quiz = Quiz.objects.filter(Course = courses, After = number)
-     selected = slides.objects.filter(Course = courses, Slide_Number=number)
-     if detail:
-               details = {'details':detail[0],
-                         'website':website_data[0],
-                         'slides':slide,
-                         'selected':selected[0],
-                         'next':f'/dashboard/quiz/start/{courses.Name}/{int(number)}',
-                         'slide_number':f'/dashboard/slides/{courses.Name}',
-                         "finish":f'/dashboard/finish/{courses.Name}/{int(number)}',
-                         }
-     else:
-          return redirect('/login/')
-     return render(request, "finish.html", details)
-
+     try:
+          #print(name)
+          details = {}
+          quiz_ids=[]
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          courses = course.objects.get(Name=name)
+          slide = slides.objects.filter(Course = courses)
+          quiz = Quiz.objects.filter(Course = courses, After = number)
+          selected = slides.objects.filter(Course = courses, Slide_Number=number)
+          if detail:
+                    details = {'details':detail[0],
+                              'website':website_data[0],
+                              'slides':slide,
+                              'selected':selected[0],
+                              'next':f'/dashboard/quiz/start/{courses.Name}/{int(number)}',
+                              'slide_number':f'/dashboard/slides/{courses.Name}',
+                              "finish":f'/dashboard/finish/{courses.Name}/{int(number)}',
+                              }
+          else:
+               return redirect('/login/')
+          return render(request, "finish.html", details)
+     except:
+          return handle_302(request, Exception)
 
 def take_quiz(request, name, number):
      try:
@@ -437,27 +467,29 @@ def take_quiz(request, name, number):
 #      return render(request, "course_quizs.html", details)
 
 def community(request):
-     if request.method == "POST":
-          message = request.POST['message']
-          if message=="":
-               pass
+     try:
+          if request.method == "POST":
+               message = request.POST['message']
+               if message=="":
+                    pass
+               else:
+                    name = User.objects.get(username = request.user)
+                    user_message = community_Feature(Name = name, comments = message)
+                    user_message.save()
+          details = {}
+          users = request.user
+          detail = user.objects.filter(username=users)
+          website_data = website.objects.filter(code = detail[0].Country)
+          all_messages = community_Feature.objects.all()
+          if detail:
+               details = {'details':detail[0],
+                         'website':website_data[0],
+                         'messages':all_messages}
           else:
-               name = User.objects.get(username = request.user)
-               user_message = community_Feature(Name = name, comments = message)
-               user_message.save()
-     details = {}
-     users = request.user
-     detail = user.objects.filter(username=users)
-     website_data = website.objects.filter(code = detail[0].Country)
-     all_messages = community_Feature.objects.all()
-     if detail:
-          details = {'details':detail[0],
-                     'website':website_data[0],
-                     'messages':all_messages}
-     else:
-          return redirect('/login/')
-     return render(request, "course_community.html", details)
-
+               return redirect('/login/')
+          return render(request, "course_community.html", details)
+     except:
+          return handle_302(request, Exception)
 
 
 def user_certificate(request, id):
@@ -469,6 +501,7 @@ def user_certificate(request, id):
           if course_name:
                if course_name.Status=="Completed":
                     for i in website_data:
+                         pass
                          #print(i.logo)
                     #print(course_name.Course)
                     from django.http import FileResponse
